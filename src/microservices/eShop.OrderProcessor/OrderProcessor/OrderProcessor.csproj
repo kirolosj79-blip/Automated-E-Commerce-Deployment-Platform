@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
+    <PublishAot Condition="'$(EnableAotPublishing)' == 'true'">true</PublishAot>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Npgsql" Version="10.0.2" />
+    <PackageReference Include="eShop.ServiceDefaults.Depi" Version="1.0.0-beta.1" />
+    <PackageReference Include="eShop.EventBusRabbitMQ" Version="1.0.2" />
+  </ItemGroup>
+</Project>
