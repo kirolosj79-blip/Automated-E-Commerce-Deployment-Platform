@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="EventBus/EventBus.csproj" />
+  <Project Path="EventBus.Tests/EventBus.Tests.csproj" />
+</Solution>
