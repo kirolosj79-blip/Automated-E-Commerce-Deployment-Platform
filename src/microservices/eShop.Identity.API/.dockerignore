@@ -1,0 +1,11 @@
+**/.git
+**/.vs
+**/.vscode
+**/bin
+**/obj
+**/TestResults
+**/out
+**/*.user
+**/.DS_Store
+**/node_modules
+WebApp.Tests
