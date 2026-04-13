@@ -41,7 +41,7 @@ No direct dependency on IdentityServer or RabbitMQ in the current implementation
 dotnet publish src/microservices/eShop.Catalog.API/eShop.Catalog.API.csproj -c Release -o ./publish
 # Container build (from repo root)
 docker build -t eshop/catalog-api:latest -f src/microservices/eShop.Catalog.API/Dockerfile src/microservices/eShop.Catalog.API
-
+```
 ## Environment Variables
 
 
