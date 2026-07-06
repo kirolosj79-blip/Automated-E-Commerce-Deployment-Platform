@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: ahmniab/eshop-postgres 
+          image: ahmniab/eshop-postgres
           ports:
             - containerPort: 5432
           envFrom:
@@ -25,7 +25,12 @@ spec:
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
+            - name: postgres-init
+              mountPath: /docker-entrypoint-initdb.d
       volumes:
         - name: postgres-storage
           persistentVolumeClaim:
             claimName: postgres-pvc
+        - name: postgres-init
+          configMap:
+            name: postgres-init-configmap

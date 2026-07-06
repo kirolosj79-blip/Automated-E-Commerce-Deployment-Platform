@@ -6,7 +6,7 @@ metadata:
     app: identity-api
 data:
   MauiCallback: "maui://authcallback"
-  WebAppClient: "http://localhost:8080"
+  WebAppClient: "http://localhost:30080"
   BasketApiClient: "http://localhost:5221"
   OrderingApiClient: "http://ordering-api-service:5224"
   WebhooksWebClient: "http://localhost:5099"

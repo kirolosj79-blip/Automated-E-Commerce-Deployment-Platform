@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-deployment
+  labels:
+    app: webapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+        - name: webapp
+          image: ahmniab/eshop-webapp:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5045
+              name: http
+          envFrom:
+            - configMapRef:
+                name: rabbitmq-common-asbnet-configmap
+            - configMapRef:
+                name: webapp-configmap
+          env:
+            # Inject RabbitMQ credentials from existing rabbitmq-secret
+            - name: RabbitMQ__UserName
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: RABBITMQ_DEFAULT_USER
+            - name: RabbitMQ__Password
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: RABBITMQ_DEFAULT_PASS
+
+            # Dynamically construct connection string using the injected credentials
+            - name: ConnectionStrings__EventBus
+              value: "amqp://$(RabbitMQ__UserName):$(RabbitMQ__Password)@rabbitmq-service:5672"
+
+          livenessProbe:
+            tcpSocket:
+              port: 5045
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            tcpSocket:
+              port: 5045
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

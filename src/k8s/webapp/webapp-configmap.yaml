@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webapp-configmap
+  labels:
+    app: webapp
+data:
+  ASPNETCORE_ENVIRONMENT: "Production"
+  Identity__Url: "http://localhost:30223"
+  Identity__Audience: "webapp"
+  Identity__MetadataAddress: "http://identity-api-service:5223"
+  CallBackUrl: "http://localhost:30080"
+  CatalogServiceUrl: "http://catalog-api-service:5222"
+  BasketServiceUrl: "http://basket-api-service:5221"
+  OrderServiceUrl: "http://ordering-api-service:5224"

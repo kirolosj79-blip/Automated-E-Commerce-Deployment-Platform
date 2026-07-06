@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: order-processor-configmap
+  labels:
+    app: order-processor
+data:
+  ASPNETCORE_ENVIRONMENT: "Production"

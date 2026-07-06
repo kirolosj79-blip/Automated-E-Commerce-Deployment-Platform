@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ordering-api-deployment
+  labels:
+    app: ordering-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ordering-api
+  template:
+    metadata:
+      labels:
+        app: ordering-api
+    spec:
+      containers:
+        - name: ordering-api
+          image: ahmniab/eshop-ordering-api:1.0.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5224
+              name: http
+          envFrom:
+            - configMapRef:
+                name: rabbitmq-common-asbnet-configmap
+            - configMapRef:
+                name: ordering-api-configmap
+          env:
+            # Inject Postgres credentials from existing postgres-secret
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+
+            # Inject RabbitMQ credentials from existing rabbitmq-secret
+            - name: RabbitMQ__UserName
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: RABBITMQ_DEFAULT_USER
+            - name: RabbitMQ__Password
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: RABBITMQ_DEFAULT_PASS
+
+            # Dynamically construct connection strings using the injected credentials
+            - name: ConnectionStrings__orderingdb
+              value: "Host=postgres-service;Port=5432;Database=orderingdb;Username=$(POSTGRES_USER);Password=$(POSTGRES_PASSWORD)"
+            - name: ConnectionStrings__EventBus
+              value: "amqp://$(RabbitMQ__UserName):$(RabbitMQ__Password)@rabbitmq-service:5672"
+
+          livenessProbe:
+            tcpSocket:
+              port: 5224
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            tcpSocket:
+              port: 5224
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

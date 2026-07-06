@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ordering-api-configmap
+  labels:
+    app: ordering-api
+data:
+  ASPNETCORE_ENVIRONMENT: "Production"
+  Identity__Audience: "orders"
+  Identity__Url: "http://localhost:30223"
+  Identity__MetadataAddress: "http://identity-api-service:5223"

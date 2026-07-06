@@ -26,4 +26,3 @@ stage('Push Catalog API Image to DockerHub') {
     """
 }
 
-

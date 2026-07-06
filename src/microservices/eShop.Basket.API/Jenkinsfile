@@ -20,4 +20,3 @@ stage('Build and Push Basket API Image') {
     sh "docker build -t ${env.IMAGE_NAME}:${env.VERSION} src/microservices/eShop.Basket.API"
     sh "docker push ${env.IMAGE_NAME}:${env.VERSION}"
 }
-

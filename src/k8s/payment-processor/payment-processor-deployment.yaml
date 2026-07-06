@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-processor-deployment
+  labels:
+    app: payment-processor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment-processor
+  template:
+    metadata:
+      labels:
+        app: payment-processor
+    spec:
+      containers:
+        - name: payment-processor
+          image: ahmniab/eshop-payment-processor:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5226
+              name: http
+          envFrom:
+            - configMapRef:
+                name: rabbitmq-common-asbnet-configmap
+            - configMapRef:
+                name: payment-processor-configmap
+          env:
+            # Inject RabbitMQ credentials from existing rabbitmq-secret
+            - name: RabbitMQ__UserName
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: RABBITMQ_DEFAULT_USER
+            - name: RabbitMQ__Password
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: RABBITMQ_DEFAULT_PASS
+
+            # Dynamically construct connection string using the injected credentials
+            - name: ConnectionStrings__EventBus
+              value: "amqp://$(RabbitMQ__UserName):$(RabbitMQ__Password)@rabbitmq-service:5672"
+
+          livenessProbe:
+            tcpSocket:
+              port: 5226
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            tcpSocket:
+              port: 5226
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
