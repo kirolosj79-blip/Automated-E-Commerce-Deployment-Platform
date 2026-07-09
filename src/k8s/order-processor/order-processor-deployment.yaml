@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: order-processor
-          image: ahmniab/eshop-order-processor:1.0.0
+          image: ahmniab/eshop-order-processor:1.0.2
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 16888

@@ -61,7 +61,7 @@ spec:
               port: 5221
             initialDelaySeconds: 5
             periodSeconds: 10
-          
+
           resources:
             requests:
               cpu: 100m

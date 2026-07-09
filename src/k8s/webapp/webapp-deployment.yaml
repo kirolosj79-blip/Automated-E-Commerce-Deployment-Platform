@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: webapp
-          image: ahmniab/eshop-webapp:1.0.0
+          image: ahmniab/eshop-webapp:1.0.3
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5045

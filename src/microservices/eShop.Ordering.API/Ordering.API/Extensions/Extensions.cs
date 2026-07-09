@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 
 internal static class Extensions
 {

@@ -1,4 +1,4 @@
-﻿using eShop.EventBus.Abstractions;
+using eShop.EventBus.Abstractions;
 using Microsoft.Extensions.Options;
 using Npgsql;
 using eShop.OrderProcessor.Events;
