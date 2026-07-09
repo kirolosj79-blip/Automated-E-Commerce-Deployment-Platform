@@ -3,10 +3,5 @@ kind: Service
 metadata:
   name: redis-service
 spec:
-  type: ClusterIP
-  selector:
-    app: redis
-  ports:
-    - protocol: TCP
-      port: 6379
-      targetPort: 6379
+  type: ExternalName
+  externalName: eshop-redis.xjzr5c.0001.use1.cache.amazonaws.com

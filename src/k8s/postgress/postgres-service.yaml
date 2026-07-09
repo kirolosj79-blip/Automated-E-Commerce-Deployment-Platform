@@ -3,10 +3,5 @@ kind: Service
 metadata:
   name: postgres-service
 spec:
-  type: ClusterIP
-  selector:
-    app: postgres
-  ports:
-    - protocol: TCP
-      port: 5432
-      targetPort: 5432
+  type: ExternalName
+  externalName: eshop-postgres.cczick80udvj.us-east-1.rds.amazonaws.com
